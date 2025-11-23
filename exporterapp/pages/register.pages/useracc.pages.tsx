@@ -3,8 +3,8 @@ import { View, TextInput, Button, StyleSheet, Text, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { launchImageLibrary } from 'react-native-image-picker';
 
-function UserAccount() {
-    const [email, setEmail] = useState('');
+function UserAccount({navigation}:any) {
+      const [email, setEmail] = useState('');
       const [password, setPassword] = useState('');
       const [phone, setPhone] = useState('');
       const [fullName, setFullName] = useState('');
@@ -95,7 +95,7 @@ function UserAccount() {
                 <Text style={styles.fileText}>Selected: {documentFile.fileName}</Text>
             )}
 
-            <Button title='Next ->' />
+            <Button title='Next ->' onPress={()=>navigation.navigate('OrganizationDetails')}/>
 
         </View>
     );
