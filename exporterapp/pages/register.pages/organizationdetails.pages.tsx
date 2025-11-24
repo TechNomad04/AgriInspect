@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, TextInput, StyleSheet, Button } from "react-native";
+import { View, TextInput, StyleSheet, Button, Text, ScrollView } from "react-native";
 import { Picker } from '@react-native-picker/picker';
 
 function OrganizationDetails({navigation}:any) {
@@ -18,15 +18,23 @@ function OrganizationDetails({navigation}:any) {
     const [district, setdistrict] = useState('')
     const [pincode,setpincode] = useState('')
     return (
-        <View>
-            <TextInput placeholder="Company Name" 
-            value={companyname} 
-            onChangeText={setcompanyname}/>
+        <ScrollView style={styles.container}>
+            <Text style={styles.title}>Organization Details</Text>
+            
+            <Text style={styles.sectionTitle}>Company Information</Text>
+            
+            <TextInput 
+                placeholder="Company Name" 
+                value={companyname} 
+                onChangeText={setcompanyname}
+                style={styles.input}
+                placeholderTextColor="#999"
+            />
 
             <Picker
                 selectedValue={businesstype}
                 onValueChange={(itemValue) => setbusinesstype(itemValue)}
-                style={styles.input}
+                style={styles.picker}
             >
                 <Picker.Item label="Select Business Type" value={null} />
                 <Picker.Item label="Proprietorship" value="Proprietorship" />
@@ -35,77 +43,177 @@ function OrganizationDetails({navigation}:any) {
                 <Picker.Item label="LLP" value="LLP" />
             </Picker>
 
-            <TextInput placeholder="CIN (Corporate Identification Number)" 
-            value={cin} 
-            onChangeText={setcin}/>
+            <TextInput 
+                placeholder="CIN (Corporate Identification Number)" 
+                value={cin} 
+                onChangeText={setcin}
+                style={styles.input}
+                placeholderTextColor="#999"
+                autoCapitalize="characters"
+            />
 
-            <TextInput placeholder="GSTIN" 
-            value={gstin} 
-            onChangeText={setgstin}/>
+            <Text style={styles.sectionTitle}>Registrations & Licenses</Text>
 
-            <TextInput placeholder="IEC Code" 
-            value={ieccode} 
-            onChangeText={setieccode}/>
+            <TextInput 
+                placeholder="GSTIN" 
+                value={gstin} 
+                onChangeText={setgstin}
+                style={styles.input}
+                placeholderTextColor="#999"
+                autoCapitalize="characters"
+            />
 
-            <TextInput placeholder="APEDA RCMC Number" 
-            value={apedano} 
-            onChangeText={setapedono}/>
+            <TextInput 
+                placeholder="IEC Code" 
+                value={ieccode} 
+                onChangeText={setieccode}
+                style={styles.input}
+                placeholderTextColor="#999"
+                autoCapitalize="characters"
+            />
 
-            <TextInput placeholder="FSSAI License Number" 
-            value={fssaino} 
-            onChangeText={setfssaino}/>
+            <TextInput 
+                placeholder="APEDA RCMC Number" 
+                value={apedano} 
+                onChangeText={setapedono}
+                style={styles.input}
+                placeholderTextColor="#999"
+            />
 
-            <TextInput placeholder="PAN" 
-            value={pan} 
-            onChangeText={setpan}/>
+            <TextInput 
+                placeholder="FSSAI License Number" 
+                value={fssaino} 
+                onChangeText={setfssaino}
+                style={styles.input}
+                placeholderTextColor="#999"
+            />
 
-            <TextInput placeholder="Email" 
-            value={email} 
-            onChangeText={setEmail}/>
+            <TextInput 
+                placeholder="PAN" 
+                value={pan} 
+                onChangeText={setpan}
+                style={styles.input}
+                placeholderTextColor="#999"
+                autoCapitalize="characters"
+                maxLength={10}
+            />
 
-            <TextInput placeholder="Phone" 
-            value={phone} 
-            onChangeText={setPhone}
-            keyboardType="numeric"/>
+            <Text style={styles.sectionTitle}>Contact Information</Text>
 
-            <TextInput placeholder="Address" 
-            value={address} 
-            onChangeText={setaddress}/>
+            <TextInput 
+                placeholder="Email" 
+                value={email} 
+                onChangeText={setEmail}
+                style={styles.input}
+                placeholderTextColor="#999"
+                keyboardType="email-address"
+                autoCapitalize="none"
+            />
 
-            <TextInput placeholder="State" 
-            value={state} 
-            onChangeText={setstate}/>
+            <TextInput 
+                placeholder="Phone" 
+                value={phone} 
+                onChangeText={setPhone}
+                keyboardType="phone-pad"
+                style={styles.input}
+                placeholderTextColor="#999"
+            />
 
-            <TextInput placeholder="District" 
-            value={district} 
-            onChangeText={setdistrict}/>
+            <TextInput 
+                placeholder="Address" 
+                value={address} 
+                onChangeText={setaddress}
+                style={[styles.input, styles.textArea]}
+                placeholderTextColor="#999"
+                multiline
+                numberOfLines={3}
+            />
 
-            <TextInput placeholder="Pincode" 
-            value={pincode} 
-            onChangeText={setpincode}
-            keyboardType="numeric"/>
+            <TextInput 
+                placeholder="State" 
+                value={state} 
+                onChangeText={setstate}
+                style={styles.input}
+                placeholderTextColor="#999"
+            />
 
-            <Button title="Next->" onPress={()=>{navigation.navigate('DocumentUploads')}}/>
-        </View>
+            <TextInput 
+                placeholder="District" 
+                value={district} 
+                onChangeText={setdistrict}
+                style={styles.input}
+                placeholderTextColor="#999"
+            />
+
+            <TextInput 
+                placeholder="Pincode" 
+                value={pincode} 
+                onChangeText={setpincode}
+                keyboardType="numeric"
+                style={styles.input}
+                placeholderTextColor="#999"
+                maxLength={6}
+            />
+
+            <View style={styles.buttonContainer}>
+                <Button title="Next →" onPress={()=>{navigation.navigate('DocumentUploads')}}/>
+            </View>
+        </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 15,
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#f5f5f5',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#555',
+    marginTop: 16,
+    marginBottom: 12,
   },
   input: {
+    backgroundColor: '#fff',
     borderWidth: 1,
-    borderColor: "#000",
-    padding: 10,
-    marginTop: 10,
-    borderRadius: 5,
+    borderColor: "#ddd",
+    padding: 14,
+    marginTop: 12,
+    borderRadius: 8,
+    fontSize: 15,
+    color: '#333',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
   },
-  fileText: {
-    marginTop: 10,
-    fontSize: 14,
-    color: "green"
-  }
+  picker: {
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: "#ddd",
+    marginTop: 12,
+    borderRadius: 8,
+    height: 50,
+  },
+  textArea: {
+    height: 80,
+    textAlignVertical: 'top',
+    paddingTop: 14,
+  },
+  buttonContainer: {
+    marginTop: 24,
+    marginBottom: 40,
+  },
 });
 
 

@@ -9,26 +9,26 @@ interface DocumentState {
 }
 
 interface Documents {
-  iecCertificate: DocumentState | null;
-  gstCertificate: DocumentState | null;
-  apedaCertificate: DocumentState | null;
-  fssaiCertificate: DocumentState | null;
-  panCard: DocumentState | null;
-  bankCertificate: DocumentState | null;
-  aadhaarPan: DocumentState | null;
-  boardResolution: DocumentState | null;
+  iecCertificate: DocumentState[];
+  gstCertificate: DocumentState[];
+  apedaCertificate: DocumentState[];
+  fssaiCertificate: DocumentState[];
+  panCard: DocumentState[];
+  bankCertificate: DocumentState[];
+  aadhaarPan: DocumentState[];
+  boardResolution: DocumentState[];
 }
 
 function DocumentUploads() {
   const [documents, setDocuments] = useState<Documents>({
-    iecCertificate: null,
-    gstCertificate: null,
-    apedaCertificate: null,
-    fssaiCertificate: null,
-    panCard: null,
-    bankCertificate: null,
-    aadhaarPan: null,
-    boardResolution: null,
+    iecCertificate: [],
+    gstCertificate: [],
+    apedaCertificate: [],
+    fssaiCertificate: [],
+    panCard: [],
+    bankCertificate: [],
+    aadhaarPan: [],
+    boardResolution: [],
   });
 
   const pickDocument = (documentKey: keyof Documents) => {
@@ -38,7 +38,7 @@ function DocumentUploads() {
         maxWidth: 2000,
         maxHeight: 2000,
         quality: 0.8,
-        selectionLimit: 1,
+        selectionLimit: 5, // Allow up to 5 images
       },
       (res) => {
         if (res.didCancel) return;
@@ -49,18 +49,26 @@ function DocumentUploads() {
         }
 
         if (res.assets && res.assets.length > 0) {
-          const asset = res.assets[0];
+          const newDocs = res.assets.map(asset => ({
+            uri: asset.uri,
+            fileName: asset.fileName,
+            type: asset.type,
+          }));
+          
           setDocuments(prev => ({
             ...prev,
-            [documentKey]: {
-              uri: asset.uri,
-              fileName: asset.fileName,
-              type: asset.type,
-            }
+            [documentKey]: [...prev[documentKey], ...newDocs]
           }));
         }
       }
     );
+  };
+
+  const removeDocument = (documentKey: keyof Documents, index: number) => {
+    setDocuments(prev => ({
+      ...prev,
+      [documentKey]: prev[documentKey].filter((_, i) => i !== index)
+    }));
   };
 
   const renderDocumentItem = (
@@ -69,7 +77,7 @@ function DocumentUploads() {
     subtitle?: string,
     required: boolean = true
   ) => {
-    const doc = documents[key];
+    const docs = documents[key] || [];
     
     return (
       <View style={styles.documentItem}>
@@ -81,22 +89,32 @@ function DocumentUploads() {
         </View>
         
         <TouchableOpacity
-          style={[styles.uploadButton, doc && styles.uploadedButton]}
+          style={[styles.uploadButton, docs.length > 0 && styles.uploadedButton]}
           onPress={() => pickDocument(key)}
         >
-          <Text style={[styles.uploadButtonText, doc && styles.uploadedButtonText]}>
-            {doc ? '✓ Uploaded' : 'Choose File'}
+          <Text style={[styles.uploadButtonText, docs.length > 0 && styles.uploadedButtonText]}>
+            {docs.length > 0 ? `✓ ${docs.length} File(s) Uploaded` : 'Choose Files (Up to 5)'}
           </Text>
         </TouchableOpacity>
         
-        {doc && (
-          <View style={styles.fileInfo}>
-            {doc.uri && (
-              <Image source={{ uri: doc.uri }} style={styles.thumbnail} />
-            )}
-            <Text style={styles.fileName} numberOfLines={1}>
-              {doc.fileName || 'Document'}
-            </Text>
+        {docs.length > 0 && (
+          <View style={styles.filesContainer}>
+            {docs.map((doc, index) => (
+              <View key={index} style={styles.fileInfo}>
+                {doc.uri && (
+                  <Image source={{ uri: doc.uri }} style={styles.thumbnail} />
+                )}
+                <Text style={styles.fileName} numberOfLines={1}>
+                  {doc.fileName || `Document ${index + 1}`}
+                </Text>
+                <TouchableOpacity 
+                  onPress={() => removeDocument(key, index)}
+                  style={styles.removeButton}
+                >
+                  <Text style={styles.removeButtonText}>✕</Text>
+                </TouchableOpacity>
+              </View>
+            ))}
           </View>
         )}
       </View>
@@ -194,10 +212,16 @@ const styles = StyleSheet.create({
   uploadedButtonText: {
     color: '#fff',
   },
-  fileInfo: {
+  filesContainer: {
     marginTop: 12,
+  },
+  fileInfo: {
+    marginBottom: 8,
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: '#f9f9f9',
+    padding: 8,
+    borderRadius: 6,
   },
   thumbnail: {
     width: 40,
@@ -209,6 +233,15 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 13,
     color: '#666',
+  },
+  removeButton: {
+    padding: 4,
+    marginLeft: 8,
+  },
+  removeButtonText: {
+    color: '#e74c3c',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   footer: {
     marginTop: 24,

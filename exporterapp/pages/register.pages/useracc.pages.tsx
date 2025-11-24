@@ -39,13 +39,14 @@ function UserAccount({navigation}:any) {
     return (
         <View style={styles.container}>
 
-            <Text>User Account details</Text>
+            <Text style={styles.title}>User Account Details</Text>
 
             <TextInput
                 placeholder='Email'
                 value={email}
                 onChangeText={setEmail}
                 style={styles.input}
+                placeholderTextColor="#999"
             />
 
             <TextInput
@@ -54,6 +55,7 @@ function UserAccount({navigation}:any) {
                 value={password}
                 onChangeText={setPassword}
                 style={styles.input}
+                placeholderTextColor="#999"
             />
 
             <TextInput
@@ -62,6 +64,7 @@ function UserAccount({navigation}:any) {
                 value={phone}
                 onChangeText={setPhone}
                 style={styles.input}
+                placeholderTextColor="#999"
             />
 
             <TextInput
@@ -69,12 +72,13 @@ function UserAccount({navigation}:any) {
                 value={fullName}
                 onChangeText={setFullName}
                 style={styles.input}
+                placeholderTextColor="#999"
             />
 
             <Picker
                 selectedValue={value}
                 onValueChange={(itemValue) => setValue(itemValue)}
-                style={styles.input}
+                style={styles.picker}
             >
                 <Picker.Item label="Select ID Proof Type" value={null} />
                 <Picker.Item label="Aadhaar" value="Aadhaar" />
@@ -87,6 +91,7 @@ function UserAccount({navigation}:any) {
                 value={idNumber}
                 onChangeText={setIdNumber}
                 style={styles.input}
+                placeholderTextColor="#999"
             />
 
             <Button title="Upload ID Proof (JPEG/PNG)" onPress={pickDocument} />
@@ -95,7 +100,9 @@ function UserAccount({navigation}:any) {
                 <Text style={styles.fileText}>Selected: {documentFile.fileName}</Text>
             )}
 
-            <Button title='Next ->' onPress={()=>navigation.navigate('OrganizationDetails')}/>
+            <View style={styles.buttonContainer}>
+                <Button title='Next ->' onPress={()=>navigation.navigate('OrganizationDetails')}/>
+            </View>
 
         </View>
     );
@@ -104,20 +111,53 @@ function UserAccount({navigation}:any) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 15,
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#f5f5f5',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 20,
+    textAlign: 'center',
   },
   input: {
+    backgroundColor: '#fff',
     borderWidth: 1,
-    borderColor: "#000",
-    padding: 10,
-    marginTop: 10,
-    borderRadius: 5,
+    borderColor: "#ddd",
+    padding: 14,
+    marginTop: 12,
+    borderRadius: 8,
+    fontSize: 15,
+    color: '#333',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  picker: {
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: "#ddd",
+    marginTop: 12,
+    borderRadius: 8,
+    height: 50,
   },
   fileText: {
-    marginTop: 10,
+    marginTop: 12,
     fontSize: 14,
-    color: "green"
-  }
+    color: "#27ae60",
+    fontWeight: '600',
+    textAlign: 'center',
+    padding: 8,
+    backgroundColor: '#e8f8f0',
+    borderRadius: 6,
+  },
+  buttonContainer: {
+    marginTop: 20,
+  },
 });
 
 
