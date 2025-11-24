@@ -2,7 +2,7 @@ import { useState } from "react";
 import { View, TextInput, StyleSheet, Button } from "react-native";
 import { Picker } from '@react-native-picker/picker';
 
-function OrganizationDetails() {
+function OrganizationDetails({navigation}:any) {
     const [companyname, setcompanyname] = useState('');
     const [businesstype, setbusinesstype] = useState('')
     const [cin, setcin] = useState('');
@@ -28,10 +28,11 @@ function OrganizationDetails() {
                 onValueChange={(itemValue) => setbusinesstype(itemValue)}
                 style={styles.input}
             >
-                <Picker.Item label="Select ID Proof Type" value={null} />
-                <Picker.Item label="Aadhaar" value="Aadhaar" />
-                <Picker.Item label="PAN Card" value="PAN" />
-                <Picker.Item label="Passport" value="Passport" />
+                <Picker.Item label="Select Business Type" value={null} />
+                <Picker.Item label="Proprietorship" value="Proprietorship" />
+                <Picker.Item label="Partnership" value="Partnership" />
+                <Picker.Item label="Pvt Ltd" value="PvtLtd" />
+                <Picker.Item label="LLP" value="LLP" />
             </Picker>
 
             <TextInput placeholder="CIN (Corporate Identification Number)" 
@@ -84,7 +85,7 @@ function OrganizationDetails() {
             onChangeText={setpincode}
             keyboardType="numeric"/>
 
-            <Button title="Next->"/>
+            <Button title="Next->" onPress={()=>{navigation.navigate('DocumentUploads')}}/>
         </View>
     )
 }
